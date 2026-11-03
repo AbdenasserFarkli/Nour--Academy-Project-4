@@ -1,6 +1,8 @@
 import { groupes, eleves } from "./data.js";
-localStorage.setItem("dataeleves",JSON.stringify(eleves))
-localStorage.setItem("groups",JSON.stringify(groupes))
+const test = JSON.parse(localStorage.getItem("dataeleves"))
+if (test == null||test.length==0) {
+    localStorage.setItem("dataeleves",JSON.stringify(eleves))
+}
 
 
 const parents = document.getElementById("liste-eleves")
@@ -15,8 +17,10 @@ function creerLigne(eleve) {
     const buttonabsenss = document.createElement("button");
     const buttonAjoti = document.createElement("button");
     const inputnote = document.createElement("input");
-
+li.id=eleve.id
     li.classList.add(
+        
+        "eleve",
         "flex",
         "flex-col",
         "gap-3",
@@ -56,8 +60,8 @@ function creerLigne(eleve) {
         "text-brand"
     );
 
-   buttonabsenss.className = "bg-red-500 text-white px-3 py-2 rounded-lg cursor-pointer hover:bg-red-600 transition-colors";
-
+   buttonabsenss.className = " bg-red-500 text-white px-3 py-2 rounded-lg cursor-pointer hover:bg-red-600 transition-colors";
+buttonabsenss.classList.add("abssens")
 buttonAjoti.className = "bg-blue-600 text-white px-3 py-2 rounded-lg cursor-pointer hover:bg-blue-700 transition-colors";
 
     inputnote.classList.add(
@@ -97,12 +101,18 @@ buttonAjoti.className = "bg-blue-600 text-white px-3 py-2 rounded-lg cursor-poin
     return li;
 }
 function showeleves() {
-    eleves.forEach(creerLigne);
+    const datashow=JSON.parse(localStorage.getItem("dataeleves"))
+    datashow.forEach(creerLigne);
 }
 
 function countereleve() {
     const  counter = document.getElementById("compteur")
-    const data = JSON.parse(localStorage.getItem("dataeleves"))
+
+
+            const data = JSON.parse(localStorage.getItem("dataeleves"))
+
+        
+    
     counter.textContent=data.length + " élèves "
     
 }
@@ -123,9 +133,33 @@ parents.innerHTML = "";
     
 }
 const filterGroub= document.getElementById("filtre-groupe")
-filterGroub.addEventListener("change",()=>{
-    FilterByGroup()
-    
+filterGroub.addEventListener("change",(e)=>{
+        const  counter = document.getElementById("compteur")
+
+    e.preventDefault()
+    const result = FilterByGroup();
+
+const eleve=document.getElementById("liste-eleves")
+        const p = document.createElement("p")
+
+    if (result.length==0 ) {
+        
+        p.textContent=   "Aucun résultat"
+        p.classList.add("flex", "items-center", "justify-center", "text-center", "font-bold", "text-[25px]")
+
+        eleve.appendChild(p)
+        counter.textContent=result.length+" élèves"
+
+
+    }else{
+            FilterByGroup()
+                    counter.textContent=result.length+" élèves"
+
+
+
+    }
+
+
 })
 function FilterByGroup() {
   const data = JSON.parse(localStorage.getItem("dataeleves"))
@@ -133,14 +167,14 @@ function FilterByGroup() {
   const filterGroups = data.filter((filtergb)=>{
     
     return filtergb.groupeId == filterGroub.value ||filterGroub.value==""
-     
 
 
   })
+
   parents.innerHTML = "";
 
   filterGroups.forEach(creerLigne);
-
+return filterGroups
     
 }
 function countAbssence() {
@@ -184,8 +218,9 @@ parents.innerHTML = "";
     data.forEach(creerLigne);
     
 }
-function addelevinlestparent(eleve) {
 const listParent = document.getElementById("liste-parents")
+
+function addelevinlestparent(eleve) {
 const li = document.createElement("li")
 const div = document.createElement("div")
 const span = document.createElement("span")
@@ -219,11 +254,41 @@ function alertparents() {
     return loop.absences>=3
 
  })
+ listParent.innerHTML=""
 filtteri.map(addelevinlestparent)
-console.log(filtteri);
 
     
 }
+parents.addEventListener("click",(e)=>{
+    e.preventDefault()
+    const targetbutton = e.target
+    const buttonabssens=targetbutton.closest(".abssens")
+    if (buttonabssens!=null) {
+        const targetcart = buttonabssens.closest(".eleve")
+       const idCart= targetcart.id
+       Ajoterabssens(idCart)
+        
+        
+    }
+    
+    
+
+})
+ function Ajoterabssens(id) {
+  const data = JSON.parse(localStorage.getItem("dataeleves"))
+  const findbyid=data.find((target)=>{
+    return target.id==id
+  })
+findbyid.absences=findbyid.absences+1;
+localStorage.setItem("dataeleves", JSON.stringify(data));
+parents.innerHTML=""
+    data.forEach(creerLigne);
+
+countereleve()
+countAbssence()
+countallert()
+alertparents() 
+ }
 
 showeleves()
 countereleve()
