@@ -114,7 +114,7 @@ const  serchedata=document.getElementById("recherche")
 function secrche() {
        const data = JSON.parse(localStorage.getItem("dataeleves"))
        const rusultserch= data.filter((serch)=>{
-       return serch.nom.toLowerCase().includes(serchedata.value.toLowerCase())
+       return (serch.nom.toLowerCase().includes(serchedata.value.toLowerCase()) || serch.prenom.toLowerCase().includes(serchedata.value.toLowerCase()))
        })
 parents.innerHTML = "";
 
@@ -184,18 +184,49 @@ parents.innerHTML = "";
     data.forEach(creerLigne);
     
 }
-// function TrialParnote() {
-//       const data = JSON.parse(localStorage.getItem("dataeleves"))
-//       const sum = data.reduce((total,loper)=>{
-//         return loper.notes.reduce((t,countt)=>t+countt,0)
-//       })
+function addelevinlestparent(eleve) {
+const listParent = document.getElementById("liste-parents")
+const li = document.createElement("li")
+const div = document.createElement("div")
+const span = document.createElement("span")
+const p = document.createElement("p")
 
-// console.log(sum);
+li.classList.add("flex", "items-center", "justify-between", "p-4", "mb-3", "rounded-xl", "border", "bg-white")
 
-//     // data.forEach(creerLigne);
+div.classList.add("flex", "flex-col", "gap-1")
+
+p.textContent = eleve.nom +" "+ eleve.prenom
+p.classList.add("font-semibold", "text-gray-800")
+
+span.textContent = eleve.telephoneParent
+span.classList.add("text-sm", "text-gray-500")
+
+if (eleve.absences >= 3) {
+    li.classList.add("border-red-300", "bg-red-50")
+} else {
+    li.classList.add("border-gray-200")
+}
+
+listParent.appendChild(li)
+li.appendChild(div)
+div.append(span, p)
+
+return li
+}
+function alertparents() {
+ const data = JSON.parse(localStorage.getItem("dataeleves"))
+ const filtteri = data.filter((loop)=>{
+    return loop.absences>=3
+
+ })
+filtteri.map(addelevinlestparent)
+console.log(filtteri);
+
     
-// }
+}
+
 showeleves()
 countereleve()
 countAbssence()
 countallert()
+alertparents() 
