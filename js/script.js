@@ -330,7 +330,7 @@ function TrialParNom() {
 data.sort((a, b) => a.nom.localeCompare(b.nom));
 parents.innerHTML = "";
 
-    data.forEach(creerLigne);
+    data.forEach(creerLigne); 
     
 }
 function bonenote() {
