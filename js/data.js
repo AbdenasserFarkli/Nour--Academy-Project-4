@@ -112,7 +112,7 @@ export  const groupes = [
     id: 11,
     prenom: "Mehdi",
     nom: "Berrada",
-    groupeId: 3,
+    groupeId: 1,
     telephoneParent: "0611122233",
     absences: 2,
     notes: [12, 10, 14]
@@ -121,7 +121,7 @@ export  const groupes = [
     id: 12,
     prenom: "Nour",
     nom: "Amrani",
-    groupeId: 3,
+    groupeId: 2,
     telephoneParent: "0622233344",
     absences: 1,
     notes: [18, 17, 19]
@@ -130,7 +130,7 @@ export  const groupes = [
     id: 13,
     prenom: "Rayan",
     nom: "Kabbaj",
-    groupeId: 3,
+    groupeId: 1,
     telephoneParent: "0633344455",
     absences: 5,
     notes: [9, 11, 10]
@@ -139,7 +139,7 @@ export  const groupes = [
     id: 14,
     prenom: "Lina",
     nom: "Sefrioui",
-    groupeId: 3,
+    groupeId: 1,
     telephoneParent: "0644455566",
     absences: 0,
     notes: [16, 18, 17]
@@ -148,7 +148,7 @@ export  const groupes = [
     id: 15,
     prenom: "Ilyas",
     nom: "Mansouri",
-    groupeId: 3,
+    groupeId: 2,
     telephoneParent: "0655566677",
     absences: 1,
     notes: []
